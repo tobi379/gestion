@@ -1,6 +1,6 @@
 {
   "name": "gestionando",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aplicación de gestión para afiliados y fichas.",
   "main": "main.js",
   "author": "Tobias Pazos",
