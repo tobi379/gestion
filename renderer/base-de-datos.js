@@ -12,13 +12,16 @@ let ordenActual = {
 
 // Función para formatear datos (cambiar valores nulos o vacíos por "-")
 function formatearDato(dato) {
-    return dato && dato.trim() !== '' ? dato : '-';
+    return dato === null || dato === undefined || dato.trim() === '' ? '-' : dato;
 }
 
 // Función para formatear una fecha de yyyy-mm-dd a dd/mm/yyyy
 function formatearFecha(fecha) {
-    if (!fecha) return '-'; // Manejo de fechas nulas o vacías
+    if (!fecha || fecha === '-' || fecha.trim() === '' || fecha.toLowerCase().includes('undefined')) {
+        return '-'; // Manejo de fechas inválidas
+    }
     const [year, month, day] = fecha.split('-');
+    if (!year || !month || !day) return '-'; // Validación de formato
     return `${day}/${month}/${year}`;
 }
 
@@ -76,13 +79,13 @@ function renderizarTabla() {
         row.classList.add('hover:bg-gray-100', 'cursor-pointer');
 
         row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap">${formatearDato(afiliado.nombre)} ${formatearDato(afiliado.apellido)}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${formatearDato(afiliado.obra_social)}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${formatearFecha(afiliado.ultimo_contacto)}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${formatearFecha(afiliado.proximo_contacto)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-blue-500">
-                <a href="ver-paciente.html?id=${afiliado.afiliado_id}" class="hover:underline">Ver Detalle</a>
-            </td>`;
+        <td class="px-6 py-4 whitespace-nowrap">${formatearDato(afiliado.nombre)} ${formatearDato(afiliado.apellido)}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${formatearDato(afiliado.obra_social)}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${formatearFecha(afiliado.ultimo_contacto)}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${formatearFecha(afiliado.proximo_contacto)}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-blue-500">
+            <a href="ver-paciente.html?id=${afiliado.afiliado_id}" class="hover:underline">Ver Detalle</a>
+        </td>`;
         tablaPacientes.appendChild(row);
     });
 }

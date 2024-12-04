@@ -321,26 +321,26 @@ async function actualizarAfiliado() {
     }
 
     try {
-        const response = await window.electronAPI.updateAffiliate(
+        await window.electronAPI.updateAffiliate(
             afiliadoSeleccionado.id,
             affiliateData
         );
 
         showModal('¡Éxito!', 'El afiliado ha sido actualizado correctamente.', true);
 
-        // Actualizar afiliados en la lista global
+        // Actualizar el afiliado en la lista global
         afiliadosCargados = afiliadosCargados.map((afiliado) =>
             afiliado.id === afiliadoSeleccionado.id
                 ? { ...afiliado, ...affiliateData }
                 : afiliado
         );
 
-        // Actualizar el campo de búsqueda si es el afiliado seleccionado
-        afiliadoSeleccionado = { ...afiliadoSeleccionado, ...affiliateData };
-        busquedaAfiliado.value = `${affiliateData.apellido}, ${affiliateData.nombre}`;
-
-        // Volver a renderizar la barra de búsqueda con los datos actualizados
+        // Actualizar el listado desplegable
+        await cargarAfiliados();
         mostrarListadoAfiliados(busquedaAfiliado.value);
+
+        // Actualizar el campo de búsqueda
+        busquedaAfiliado.value = `${affiliateData.apellido}, ${affiliateData.nombre}`;
     } catch (error) {
         console.error('Error al actualizar afiliado:', error);
         showModal('Error', error.message || 'No se pudo actualizar el afiliado.', false);

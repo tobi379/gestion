@@ -4,16 +4,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const currentPasswordInput = document.getElementById('currentPassword');
   const newPasswordInput = document.getElementById('newPassword');
   const confirmPasswordInput = document.getElementById('confirmPassword');
+  const modal = document.getElementById('modalConfirm');
+  const cancelModal = document.getElementById('cancelModal');
+  const confirmModal = document.getElementById('confirmModal');
 
   let userId;
 
-  // Obtén el userId (puedes usar un endpoint separado para obtenerlo, o almacenarlo en localStorage)
+  // Obtener usuario actual
   try {
-    const user = await window.electronAPI.invoke('get-logged-user'); // Crea este manejador para devolver el usuario logueado.
+    const user = await window.electronAPI.invoke('get-logged-user');
     userId = user.id;
   } catch (error) {
     console.error('Error al obtener el usuario logueado:', error);
-    showNotification('No se pudo obtener el usuario actual. Intenta nuevamente.', 'error');
+    showNotification('No se pudo obtener el usuario actual.', 'error');
     return;
   }
 
@@ -26,10 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     notification.textContent = message;
 
     form.prepend(notification);
-
-    setTimeout(() => {
-      notification.remove();
-    }, 3000); // Eliminar después de 3 segundos
+    setTimeout(() => notification.remove(), 3000);
   }
 
   // Validar formulario
@@ -45,36 +45,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     return true;
   }
 
-  // Manejar el envío del formulario
-  form.addEventListener('submit', async (event) => {
+  // Abrir modal de confirmación
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
-
     if (!validateForm()) return;
 
+    modal.classList.remove('hidden'); // Mostrar modal
+  });
+
+  // Cancelar cambios
+  cancelModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Confirmar cambios
+  confirmModal.addEventListener('click', async () => {
     const data = {
-        userId, // Asegúrate de incluir el userId
-        username: usernameInput.value.trim(),
-        currentPassword: currentPasswordInput.value.trim(),
-        newPassword: newPasswordInput.value.trim(),
+      userId,
+      username: usernameInput.value.trim() || null,
+      currentPassword: currentPasswordInput.value.trim(),
+      newPassword: newPasswordInput.value.trim() || null,
     };
 
     try {
-        const result = await window.electronAPI.updateUserConfig(data);
-
-        showNotification(result.message || 'Cambios guardados exitosamente.', 'success');
-        form.reset(); // Reiniciar el formulario tras éxito
+      const result = await window.electronAPI.updateUserConfig(data);
+      showNotification(result.message || 'Cambios guardados exitosamente.', 'success');
+      form.reset();
     } catch (error) {
-        // Extraer el mensaje del error
-        const errorMessage = error?.message || error?.toString() || 'No se pudo actualizar la información.';
-        
-        // Manejar el mensaje específico
-        const userFriendlyMessage =
-            errorMessage.includes('La contraseña actual es incorrecta.')
-                ? 'La contraseña actual es incorrecta.'
-                : errorMessage;
-
-        console.error('Error al actualizar los datos del usuario:', error);
-        showNotification(userFriendlyMessage, 'error');
+      const errorMessage =
+        error.message.includes('La contraseña actual es incorrecta.')
+          ? 'La contraseña actual es incorrecta.'
+          : error.message;
+      showNotification(errorMessage, 'error');
+    } finally {
+      modal.classList.add('hidden'); // Ocultar modal tras acción
     }
   });
 });
