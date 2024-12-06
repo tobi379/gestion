@@ -324,7 +324,7 @@ async function marcarComoContactado(ficha) {
         renderizarTabla(fichasGlobal);
         renderizarCalendario();
 
-        showModal('Éxito', `El afiliado ${ficha.nombre} ${ficha.apellido} fue marcado como contactado.`);
+        showModal('Éxito', `El hermano ${ficha.nombre} ${ficha.apellido} fue marcado como contactado.`);
     } catch (error) {
         console.error('Error al marcar como contactado:', error);
         showModal('Error', error.message || 'Hubo un problema al marcar como contactado.', false);

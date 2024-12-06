@@ -35,7 +35,7 @@ async function cargarAfiliados() {
         // Por defecto, ordenar por apellido ascendente
         ordenarTabla('apellido', true);
     } catch (error) {
-        console.error('Error al cargar afiliados:', error);
+        console.error('Error al cargar hermanos:', error);
         alert('Hubo un problema al cargar los datos. Revisa la consola para más detalles.');
     }
 }

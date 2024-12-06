@@ -1,7 +1,7 @@
 {
-  "name": "gestionando",
-  "version": "1.0.1",
-  "description": "Aplicación de gestión para afiliados y fichas.",
+  "name": "hospitalia",
+  "version": "1.0.2",
+  "description": "Aplicación de gestión para hermanos y fichas.",
   "main": "main.js",
   "author": "Tobias Pazos",
   "license": "MIT",
@@ -23,8 +23,8 @@
     "tailwindcss": "^3.4.15"
   },
   "build": {
-    "appId": "com.tobiaspazos.gestionando",
-    "productName": "Gestionando",
+    "appId": "com.tobiaspazos.hospitalia",
+    "productName": "Hospitalia",
     "directories": {
       "output": "dist"
     },

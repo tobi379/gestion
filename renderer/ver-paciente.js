@@ -125,7 +125,7 @@ async function cargarDetalleAfiliado() {
     const afiliadoId = obtenerIdDesdeURL();
 
     if (!afiliadoId || isNaN(afiliadoId)) {
-        showModal('Error', 'No se proporcionó un ID válido para el afiliado.', false);
+        showModal('Error', 'No se proporcionó un ID válido para el hermano.', false);
         return;
     }
 
@@ -133,7 +133,7 @@ async function cargarDetalleAfiliado() {
         const afiliado = await window.electronAPI.invoke('get-affiliate-by-id', parseInt(afiliadoId, 10));
 
         if (!afiliado) {
-            showModal('Error', 'El afiliado no fue encontrado.', false);
+            showModal('Error', 'El hermano no fue encontrado.', false);
             return;
         }
 
@@ -146,8 +146,8 @@ async function cargarDetalleAfiliado() {
 
         await cargarFichas(afiliadoId);
     } catch (error) {
-        console.error('Error al cargar el afiliado:', error.message || error);
-        showModal('Error', error.message || 'Hubo un problema al cargar los datos del afiliado.', false);
+        console.error('Error al cargar el hermano:', error.message || error);
+        showModal('Error', error.message || 'Hubo un problema al cargar los datos del hermano.', false);
     }
 }
 
@@ -193,7 +193,7 @@ async function cargarFichas(afiliadoId) {
         });
     } catch (error) {
         console.error('Error al cargar fichas:', error);
-        showModal('Error', 'Hubo un problema al cargar las fichas del afiliado.', false);
+        showModal('Error', 'Hubo un problema al cargar las fichas del hermano.', false);
     }
 }
 

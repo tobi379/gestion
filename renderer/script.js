@@ -92,8 +92,8 @@ async function cargarAfiliados() {
         mostrarListadoAfiliados(''); // Solo carga datos, no muestra el listado
         listadoAfiliados.style.display = 'none'; // Aseguramos que permanezca oculto
     } catch (error) {
-        console.error('Error al cargar los afiliados:', error);
-        showModal('Error', 'Error al cargar los afiliados. Revisa la consola para más detalles.', false);
+        console.error('Error al cargar los hermanos:', error);
+        showModal('Error', 'Error al cargar los hermanos. Revisa la consola para más detalles.', false);
     }
 }
 
@@ -110,7 +110,7 @@ async function inicializarEdicionPaciente() {
         const afiliado = await window.electronAPI.invoke('get-affiliate-by-id', parseInt(afiliadoId));
 
         if (!afiliado) {
-            showModal('Error', 'El afiliado no fue encontrado.');
+            showModal('Error', 'El hermano no fue encontrado.');
             return;
         }
 
@@ -156,8 +156,8 @@ async function inicializarEdicionPaciente() {
             botonNuevaFicha.textContent = 'Nueva Ficha';
         }
     } catch (error) {
-        console.error('Error al inicializar la edición del afiliado:', error);
-        showModal('Error', 'Error al cargar los datos del afiliado.');
+        console.error('Error al inicializar la edición del hermano:', error);
+        showModal('Error', 'Error al cargar los datos del hermano.');
     }
 }
 
@@ -182,14 +182,14 @@ function mostrarListadoAfiliados(filtro = '') {
 
 async function seleccionarAfiliado(afiliado) {
     try {
-        console.log('Afiliado seleccionado:', afiliado); // Verifica los datos
+        console.log('hermano seleccionado:', afiliado); // Verifica los datos
         const afiliadoId = afiliado.afiliado_id || afiliado.id; // Asegúrate de capturar correctamente el ID
         if (!afiliadoId) {
-            throw new Error('El afiliado no tiene un ID válido.');
+            throw new Error('El hermano no tiene un ID válido.');
         }
 
         const datosAfiliado = await window.electronAPI.invoke('get-affiliate-by-id', afiliadoId);
-        console.log('Datos del afiliado obtenidos:', datosAfiliado); // Verifica los datos obtenidos
+        console.log('Datos del hermano obtenidos:', datosAfiliado); // Verifica los datos obtenidos
 
         // Asignar valores a los campos del formulario
         busquedaAfiliado.value = `${afiliado.apellido}, ${afiliado.nombre}`;
@@ -231,8 +231,8 @@ async function seleccionarAfiliado(afiliado) {
         document.getElementById('contactoEmergencia').value = datosAfiliado.contacto_emergencia || '';
         document.getElementById('numAfiliado').value = datosAfiliado.num_afiliado || '';
     } catch (error) {
-        console.error('Error al seleccionar afiliado:', error.message || error);
-        showModal('Error', 'No se pudieron obtener los datos completos del afiliado.', false);
+        console.error('Error al seleccionar hermano:', error.message || error);
+        showModal('Error', 'No se pudieron obtener los datos completos del hermano.', false);
     }
 }
 
@@ -255,18 +255,18 @@ botonNuevaFicha.addEventListener('click', (event) => {
 // Función para eliminar afiliado
 async function eliminarAfiliadoSeleccionado() {
     if (!afiliadoSeleccionado) {
-        showModal('Error', 'No hay ningún afiliado seleccionado para eliminar.', false);
+        showModal('Error', 'No hay ningún hermano seleccionado para eliminar.', false);
         return;
     }
 
     showConfirmModal(
         'Confirmación de Eliminación',
-        `¿Estás seguro de que deseas eliminar al afiliado ${afiliadoSeleccionado.apellido}, ${afiliadoSeleccionado.nombre}?`,
+        `¿Estás seguro de que deseas eliminar al hermano ${afiliadoSeleccionado.apellido}, ${afiliadoSeleccionado.nombre}?`,
         async () => {
             try {
                 await window.electronAPI.invoke('delete-affiliate-and-records', afiliadoSeleccionado.id);
 
-                showModal('¡Éxito!', 'El afiliado ha sido eliminado correctamente.', true);
+                showModal('¡Éxito!', 'El hermano ha sido eliminado correctamente.', true);
 
                 // Limpiar selección, formulario y barra de búsqueda
                 limpiarBusqueda();
@@ -280,8 +280,8 @@ async function eliminarAfiliadoSeleccionado() {
                 await cargarAfiliados();
                 mostrarListadoAfiliados();
             } catch (error) {
-                console.error('Error al eliminar afiliado:', error);
-                showModal('Error', error.message || 'No se pudo eliminar el afiliado. Intenta nuevamente.', false);
+                console.error('Error al eliminar hermano:', error);
+                showModal('Error', error.message || 'No se pudo eliminar el hermano. Intenta nuevamente.', false);
             }
         }
     );
@@ -290,7 +290,7 @@ async function eliminarAfiliadoSeleccionado() {
 // Función para actualizar afiliado
 async function actualizarAfiliado() {
     if (!afiliadoSeleccionado) {
-        showModal('Error', 'No hay ningún afiliado seleccionado para actualizar.', false);
+        showModal('Error', 'No hay ningún hermano seleccionado para actualizar.', false);
         return;
     }
 
@@ -326,7 +326,7 @@ async function actualizarAfiliado() {
             affiliateData
         );
 
-        showModal('¡Éxito!', 'El afiliado ha sido actualizado correctamente.', true);
+        showModal('¡Éxito!', 'El hermano ha sido actualizado correctamente.', true);
 
         // Actualizar el afiliado en la lista global
         afiliadosCargados = afiliadosCargados.map((afiliado) =>
@@ -342,8 +342,8 @@ async function actualizarAfiliado() {
         // Actualizar el campo de búsqueda
         busquedaAfiliado.value = `${affiliateData.apellido}, ${affiliateData.nombre}`;
     } catch (error) {
-        console.error('Error al actualizar afiliado:', error);
-        showModal('Error', error.message || 'No se pudo actualizar el afiliado.', false);
+        console.error('Error al actualizar hermano:', error);
+        showModal('Error', error.message || 'No se pudo actualizar el hermano.', false);
     }
 }
 
@@ -396,15 +396,15 @@ document.getElementById('formularioPaciente').addEventListener('submit', async (
 
     try {
         await window.electronAPI.invoke('create-affiliate', afiliado);
-        showModal('¡Éxito!', 'El afiliado ha sido guardado correctamente.', true);
+        showModal('¡Éxito!', 'El hermano ha sido guardado correctamente.', true);
 
         // Limpiar el formulario y actualizar la lista de afiliados
         document.getElementById('formularioPaciente').reset();
         listadoAfiliados.style.display = 'none';
         await cargarAfiliados();
     } catch (error) {
-        console.error('Error al guardar el afiliado:', error);
-        showModal('Error', error.message || 'No se pudo guardar el afiliado. Intenta nuevamente.', false);
+        console.error('Error al guardar el hermano:', error);
+        showModal('Error', error.message || 'No se pudo guardar el hermano. Intenta nuevamente.', false);
     }
 });
 
@@ -413,7 +413,7 @@ formularioFicha.addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevenir comportamiento predeterminado
 
     if (!afiliadoSeleccionado) {
-        showModal('Error', 'No se pudo guardar la ficha. Selecciona un afiliado primero.', false);
+        showModal('Error', 'No se pudo guardar la ficha. Selecciona un hermano primero.', false);
         return;
     }
 
