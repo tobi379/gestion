@@ -1,6 +1,6 @@
 {
   "name": "hospitalia",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Aplicación de gestión para hermanos y fichas.",
   "main": "main.js",
   "author": "Tobias Pazos",

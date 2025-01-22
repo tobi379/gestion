@@ -162,7 +162,7 @@ async function cargarFichas(afiliadoId) {
             listaFichas.innerHTML = `
                 <div class="text-center text-gray-500 py-6">
                     <i class="fas fa-file-medical-alt text-blue-500 text-4xl mb-2"></i>
-                    <p class="text-lg font-medium">No hay fichas disponibles para este paciente.</p>
+                    <p class="text-lg font-medium">No hay fichas disponibles para este hermano.</p>
                 </div>`;
             return;
         }
